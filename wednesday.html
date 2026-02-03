@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music DB - Day view</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <nav>
+      <div>
+        <a href="students.html">Students</a>
+        <a href="groups.html">Groups</a>
+        <a href="schools.html">Schools</a>
+      </div>
+      <div>
+        <a href="index.html">Mon</a>
+        <a href="tuesday.html">Tue</a>
+        <a href="wednesday.html" class="selected-btn">Wed</a>
+        <a href="thursday.html">Thu</a>
+        <a href="friday.html">Fri</a>
+        <button id="hamburger-menu">
+          <img src="assets/icons8-hamburger-menu-500.png" />
+        </button>
+      </div>
+    </nav>
+    <div id="hamburger-dropdown">
+      <button id="dark-mode-toggle" style="border-top-width: 0">
+        Toggle Dark Mode
+      </button>
+      <button id="download-backup">Backup DB Locally</button>
+      <button>Backup DB to Supabase</button>
+      <button onclick="location.href='load-local-backup.html'">
+        Load DB from file
+      </button>
+      <button>Load DB from Supabase</button>
+      <button onclick="location.href='new-year.html'">Start New Year</button>
+      <button style="border-radius: 0 0px 8px 8px; border-bottom-width: 0">
+        Help
+      </button>
+    </div>
+
+    <!-- page specific code -->
+
+    <header id="day-header">
+      <h1>Wednesday</h1>
+      <div id="termBtnContainer">
+        <label>Term:</label>
+        <button id="term1">1</button>
+        <button id="term2">2</button>
+        <button id="term3">3</button>
+        <button id="term4">4</button>
+      </div>
+      <div id="weekBtnContainer">
+        <label>Week:</label>
+        <button id="week1">1</button>
+        <button id="week2">2</button>
+        <button id="week3">3</button>
+        <button id="week4">4</button>
+        <button id="week5">5</button>
+        <button id="week6">6</button>
+        <button id="week7">7</button>
+        <button id="week8">8</button>
+        <button id="week9">9</button>
+        <button id="week10">10</button>
+        <button id="week11">11</button>
+      </div>
+      <br />
+    </header>
+    <table id="day-table">
+      <thead>
+        <tr class="bottom-border">
+          <th>Attend.</th>
+          <th>Time</th>
+          <th class="left-border">School</th>
+          <th>Instrument</th>
+          <th>Name</th>
+          <th>Year</th>
+          <th>Form</th>
+          <th>Email</th>
+          <th>Notes</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <!-- <tr class="bottom-border">
+          <td><input type="checkbox" /></td>
+          <td>09:30</td>
+          <td class="left-border">Catholic Cathedral</td>
+          <td>Saxaphone</td>
+          <td>John Doe</td>
+          <td>11</td>
+          <td>13C</td>
+          <td>john@ccmail.com</td>
+          <td><textarea disabled>notes</textarea></td>
+          <td><button>edit</button></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" /></td>
+          <td>11:00</td>
+          <td class="left-border">Bedes</td>
+          <td>Flute</td>
+          <td>Group C</td>
+          <td colspan="3"></td> -->
+        <!-- This cell spans 4 columns for "group notes" -->
+        <!-- <td><textarea disabled>group notes</textarea></td>
+          <td><button>edit</button></td>
+        </tr>
+        <tr>
+          <td colspan="2"></td>
+          <td class="group-label left-border light-bottom-border">Name</td>
+          <td class="group-label light-bottom-border">Instrument</td>
+          <td class="group-label light-bottom-border">Year</td>
+          <td class="group-label light-bottom-border">Form</td>
+          <td class="group-label light-bottom-border">Email</td>
+          <td class="light-bottom-border" colspan="2"></td>
+          <td class="group-label light-bottom-border">Individual notes</td>
+          <td class="light-bottom-border"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="checkbox" /></td>
+          <td class="left-border light-bottom-border group-data">Jane Doe</td>
+          <td class="light-bottom-border group-data">flute</td>
+          <td class="light-bottom-border group-data">11</td>
+          <td class="light-bottom-border group-data">4</td>
+          <td class="light-bottom-border group-data">jane@bedes.com</td>
+          <td class="light-bottom-border group-data" colspan="2"></td>
+          <td class="light-bottom-border group-data"><button>+</button></td>
+          <td class="light-bottom-border group-data"><button>edit</button></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="checkbox" /></td>
+          <td class="left-border light-bottom-border group-data">Liam Lane</td>
+          <td class="light-bottom-border group-data">Flute</td>
+          <td class="light-bottom-border group-data">10</td>
+          <td class="light-bottom-border group-data">6</td>
+          <td class="light-bottom-border group-data">liam@bedes.com</td>
+          <td class="light-bottom-border" colspan="2"></td>
+          <td class="light-bottom-border">
+            <textarea style="height: 1em" disabled>
+individualised notes</textarea
+            >
+          </td>
+          <td class="light-bottom-border"><button>edit</button></td>
+        </tr>
+        <tr class="bottom-border">
+          <td></td>
+          <td><input type="checkbox" /></td>
+          <td class="left-border group-data">Harry White</td>
+          <td class="light-bottom-border group-data">flute</td>
+          <td class="group-data">11</td>
+          <td class="group-data">2</td>
+          <td class="group-data">harry@bedes.com</td>
+          <td colspan="2"></td>
+          <td><button>+</button></td>
+          <td><button>edit</button></td>
+        </tr>
+        <tr class="bottom-border">
+          <td><input type="checkbox" /></td>
+          <td><input type="time" /></td>
+          <td class="left-border">
+            <input type="text" placeholder="school" />
+          </td>
+          <td><input type="text" placeholder="instrument" /></td>
+          <td>
+            <input
+              type="text"
+              r
+              placeholder="first name"
+              style="width: 120px"
+            /><input type="text" placeholder="last name" style="width: 120px" />
+          </td>
+          <td><input type="number" style="width: 30px" /></td>
+          <td><input type="text" style="width: 30px" placeholder="form" /></td>
+          <td><input type="email" placeholder="email" /></td>
+          <td><textarea disabled>notes</textarea></td>
+          <td><button>save</button></td>
+        </tr> -->
+      </tbody>
+    </table>
+
+    <div id="delete-confirmation">
+      <div
+        style="
+          background-color: var(--bg);
+          border: solid var(--primary) var(--border);
+          border-radius: var(--border-radius);
+          padding: 20px;
+        "
+        class="flex-column"
+      >
+        <h2>Delete Confirmation</h2>
+        <p style="margin-bottom: 10px">
+          Deleting this school will DELETE ALL ASSOCIATED DATA<br />
+          including ALL STUDENTS in it and their ATTENDANCE and LESSON data.<br />
+          Please make a BACKUP before carrying out this action<br /><br />
+          Are you sure that you want to delete this school?
+        </p>
+        <div class="flex-row">
+          <button
+            class="delete-btn"
+            id="confirm-deletion"
+            style="margin-right: 20px"
+          >
+            Yes, DELETE
+          </button>
+          <button id="reject-confirmation" class="safe-btn">No, CANCEL</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="invalid-input">
+      <div
+        style="
+          background-color: var(--bg);
+          border: solid var(--primary) var(--border);
+          border-radius: var(--border-radius);
+          padding: 20px;
+        "
+        class="flex-column"
+      >
+        <h2>Invalid Input</h2>
+        <div class="flex-column" id="append-invalid"></div>
+        <button id="rehide-invalid-popup" style="margin-top: 10px">
+          Dismiss
+        </button>
+      </div>
+    </div>
+
+    <!-- libraries -->
+    <script src="libraries/sql-asm.js"></script>
+    <script src="libraries/jquery-3.7.1.js"></script>
+    <script src="libraries/supabase.js"></script>
+    <!-- main script -->
+    <script src="wednesday.js"></script>
+  </body>
+</html>

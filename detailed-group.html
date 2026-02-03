@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music DB - Detailed student</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <nav>
+      <div>
+        <a href="students.html">Students</a>
+        <a href="groups.html">Groups</a>
+        <a href="schools.html">Schools</a>
+      </div>
+      <div>
+        <a href="index.html">Mon</a>
+        <a href="tuesday.html">Tue</a>
+        <a href="wednesday.html">Wed</a>
+        <a href="thursday.html">Thu</a>
+        <a href="friday.html">Fri</a>
+        <button id="hamburger-menu">
+          <img src="assets/icons8-hamburger-menu-500.png" />
+        </button>
+      </div>
+    </nav>
+    <div id="hamburger-dropdown">
+      <button id="dark-mode-toggle" style="border-top-width: 0">
+        Toggle Dark Mode
+      </button>
+      <button id="download-backup">Backup DB Locally</button>
+      <button>Backup DB to Supabase</button>
+      <button onclick="location.href='load-local-backup.html'">
+        Load DB from file
+      </button>
+      <button>Load DB from Supabase</button>
+      <button onclick="location.href='new-year.html'">Start New Year</button>
+      <!-- TEMPORARY BUTTON FOR INSERTING SAMPLE DATA -->
+      <button id="insert-sample-data">INSERT SAMPLE DATA</button>
+      <!-- END OF TEMPORARY ELEMENTS-->
+      <button style="border-radius: 0 0px 8px 8px; border-bottom-width: 0">
+        Help
+      </button>
+    </div>
+
+    <!-- page specific code -->
+
+    <header id="detailed-header">
+      <div>
+        <h1 style="margin-bottom: 10px">C</h1>
+        <p style="margin-left: 2em">Flute</p>
+        <div class="flex-row">
+          <label style="margin-right: 20px">Lesson(s): </label>
+          <p>Mon 11:00</p>
+        </div>
+      </div>
+      <div>
+        <h1 style="margin-bottom: 10px">
+          <span style="color: var(--bg)">filling space</span>
+        </h1>
+        <div class="flex-row">
+          <button style="margin-right: 20px">Edit</button>
+          <button>Delete</button>
+        </div>
+      </div>
+      <div
+        id="detailed-notes-grid"
+        style="display: grid; grid-template-columns: 33.33% 33.33% 33.33%"
+      >
+        <div class="flex-column-left">
+          <label>Instrument hire</label>
+          <textarea></textarea>
+        </div>
+        <div class="flex-column-left">
+          <label>Year plan</label>
+          <textarea></textarea>
+        </div>
+        <div class="flex-column-left">
+          <label>Musicianship materials</label>
+          <textarea></textarea>
+        </div>
+        <div class="flex-column-left">
+          <label>Year goals</label>
+          <textarea></textarea>
+        </div>
+        <div class="flex-column-left">
+          <label>Technician materials</label>
+          <textarea></textarea>
+        </div>
+        <div class="flex-column-left">
+          <label>Performance materials</label>
+          <textarea></textarea>
+        </div>
+      </div>
+    </header>
+    <div id="secondary-nav">
+      <button id="studentsBtn">Students</button>
+      <button id="repertoireBtn">Repertoire</button>
+      <button id="term1Btn">Term 1</button>
+      <button id="term2Btn">Term 2</button>
+      <button id="term3Btn">Term 3</button>
+      <button id="term4Btn">Term 4</button>
+    </div>
+
+    <div id="detailed-main"></div>
+
+    <!-- libraries -->
+    <script src="libraries/sql-asm.js"></script>
+    <script src="libraries/jquery-3.7.1.js"></script>
+    <script src="libraries/supabase.js"></script>
+    <!-- main script -->
+    <script src="detailed-group.js"></script>
+  </body>
+</html>

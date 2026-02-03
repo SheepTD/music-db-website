@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music DB - New year</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <nav>
+      <div>
+        <a href="students.html">Students</a>
+        <a href="groups.html">Groups</a>
+        <a href="schools.html" class="selected-btn">Schools</a>
+      </div>
+      <div>
+        <a href="index.html">Mon</a>
+        <a href="tuesday.html">Tue</a>
+        <a href="wednesday.html">Wed</a>
+        <a href="thursday.html">Thu</a>
+        <a href="friday.html">Fri</a>
+        <button id="hamburger-menu">
+          <img src="assets/icons8-hamburger-menu-500.png" />
+        </button>
+      </div>
+    </nav>
+    <div id="hamburger-dropdown">
+      <button id="dark-mode-toggle" style="border-top-width: 0">
+        Toggle Dark Mode
+      </button>
+      <button id="download-backup">Backup DB Locally</button>
+      <button>Backup DB to Supabase</button>
+      <button onclick="location.href='load-local-backup.html'">
+        Load DB from file
+      </button>
+      <button>Load DB from Supabase</button>
+      <button onclick="location.href='new-year.html'">Start New Year</button>
+      <button style="border-radius: 0 0px 8px 8px; border-bottom-width: 0">
+        Help
+      </button>
+    </div>
+
+    <!-- page specific code -->
+
+    <main id="new-year-main">
+      <header style="grid-column: 1 / span 3">
+        <div>
+          <h1 style="margin-bottom: 10px">New year</h1>
+          <p style="margin-left: 2em">
+            Select students, groups and schools to be<br />maintained and
+            brought over to the new year.<br />Students years will be increased
+            by one.
+          </p>
+        </div>
+        <button style="margin-right: 2em" id="add-school">Done</button>
+      </header>
+      <!-- div to create spacing between header and table -->
+      <div
+        style="grid-column: 1 / span 3; height: 30px"
+        class="bottom-border"
+      ></div>
+      <div class="flex-row-between right-border">
+        <h2 style="margin-left: 2em">Students</h2>
+        <button style="margin-right: 2em">Select all</button>
+      </div>
+      <div class="flex-row-between right-border">
+        <h2 style="margin-left: 2em">Groups</h2>
+        <button style="margin-right: 2em">Select all</button>
+      </div>
+      <div class="flex-row-between">
+        <h2 style="margin-left: 2em">School</h2>
+        <button style="margin-right: 2em">Select all</button>
+      </div>
+
+      <table style="grid-row: 4 / span 3" class="right-border">
+        <tr class="bottom-border">
+          <th>Name</th>
+          <th>Instrument</th>
+          <th>Year</th>
+          <th></th>
+        </tr>
+        <tr>
+          <td>Jane Doe</td>
+          <td>Flute</td>
+          <td>11</td>
+          <td><input type="checkbox" /></td>
+        </tr>
+        <tr>
+          <td>Liam Lane</td>
+          <td>Piano</td>
+          <td>10</td>
+          <td><input type="checkbox" /></td>
+        </tr>
+        <tr>
+          <td>Harry White</td>
+          <td>Flute</td>
+          <td>11</td>
+          <td><input type="checkbox" /></td>
+        </tr>
+      </table>
+
+      <table class="right-border" style="grid-row: 4 / span 2">
+        <tr class="bottom-border">
+          <th>Name</th>
+          <th>Instrument</th>
+          <th>Lesson</th>
+          <th></th>
+        </tr>
+        <tr>
+          <td>C</td>
+          <td>Flute</td>
+          <td>Mon 1:00</td>
+          <td><input type="checkbox" /></td>
+        </tr>
+        <tr>
+          <td>Pearl Jam</td>
+          <td></td>
+          <td>Wed 13:00</td>
+          <td><input type="checkbox" /></td>
+        </tr>
+      </table>
+      <table style="grid-row: 4 / span 1">
+        <tr class="bottom-border">
+          <th>Name</th>
+          <th></th>
+        </tr>
+        <tr class="flex-row-between">
+          <td>Bedes</td>
+          <td><input type="checkbox" /></td>
+        </tr>
+        <tr class="flex-row-between">
+          <td>Hogwarts</td>
+          <td><input type="checkbox" /></td>
+        </tr>
+      </table>
+    </main>
+
+    <!-- libraries -->
+    <script src="libraries/sql-asm.js"></script>
+    <script src="libraries/jquery-3.7.1.js"></script>
+    <script src="libraries/supabase.js"></script>
+    <!-- main script -->
+    <script src="main.js"></script>
+  </body>
+</html>

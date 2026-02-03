@@ -1,0 +1,719 @@
+/* FONTS */
+@font-face {
+  font-family: "regular";
+  font-style: normal;
+  font-weight: normal;
+  src: url(fonts/dm-sans/DMSans-Regular.ttf);
+}
+@font-face {
+  font-family: "italic";
+  font-style: normal;
+  font-weight: normal;
+  src: url(fonts/dm-sans/DMSans-Italic.ttf);
+}
+
+@font-face {
+  font-family: "medium";
+  font-style: normal;
+  font-weight: normal;
+  src: url(fonts/dm-sans/DMSans-Medium.ttf);
+}
+
+@font-face {
+  font-family: "italic-medium";
+  font-style: normal;
+  font-weight: normal;
+  src: url(fonts/dm-sans/DMSans-MediumItalic.ttf);
+}
+
+@font-face {
+  font-family: "bold";
+  font-style: normal;
+  font-weight: normal;
+  src: url(fonts/dm-sans/DMSans-Bold.ttf);
+}
+
+@font-face {
+  font-family: "italic-bold";
+  font-style: normal;
+  font-weight: normal;
+  src: url("fonts/dm-sans/DMSans-BoldItalic.ttf");
+}
+
+/* COLOURS */
+/* slightly altered version of: https://colorhunt.co/palette/f9f7f7dbe2ef3f72af112d4e */
+:root {
+  --text: #000000;
+  --light-text: #1f1f1f;
+  --bg: #f8f6f6;
+  --primary: #112d50;
+  --secondary: #bccae0;
+  --accent: #4072b0;
+  --red: #ff2525;
+  --green: #5fee58;
+  --header: 2em;
+  --subheading: 1.2em;
+  --normal: 1em;
+  --sub-normal: 0.9em;
+  --small: 0.75em;
+  --smallest: 0.6em;
+  --nav: 0.9rem;
+  --border: 2px;
+  --border-radius: 8px;
+}
+
+/* dark theme colours */
+[data-theme="dark"] {
+  --text: #ffffff;
+  --light-text: #e0e0e0;
+  --bg: #090707;
+  --primary: #afcbee;
+  --secondary: #1f2c42;
+  --accent: #4f82bf;
+  --red: #ff2c2c;
+  --green: #1abf12;
+  --header: 2em;
+  --subheading: 1.2em;
+  --normal: 1rem;
+  --sub-normal: 0.9em;
+  --small: 0.75em;
+  --smallest: 0.6em;
+  --nav: 0.9rem;
+  --border: 2px;
+  --border-radius: 8px;
+}
+
+/* GLOBAL STYLES */
+html,
+body {
+  background-color: var(--bg);
+  margin: 0;
+  padding: 0;
+  color: var(--text);
+  font-family: "regular";
+  overflow-x: hidden;
+}
+/* stop text caret from appearing when clickin elements */
+* {
+  /* ...EXCEPT for these specific interactive form elements */
+  &:not(textarea):not(input) {
+    user-select: none;
+    -webkit-user-select: none; /* Safari/Chrome compatibility */
+    -moz-user-select: none; /* Firefox compatibility */
+    -ms-user-select: none; /* IE/Edge compatibility */
+  }
+}
+p {
+  margin: 0;
+  padding: 0;
+}
+button {
+  cursor: pointer;
+  color: var(--text);
+  font-family: "regular";
+  font-size: var(--small);
+  background-color: var(--bg);
+  border: solid var(--border) var(--primary);
+  border-radius: var(--border-radius);
+}
+
+[data-theme="dark"] img {
+  -webkit-filter: invert(1);
+  filter: invert(1);
+}
+main {
+  position: absolute;
+  top: calc(8vh + var(--border));
+  width: 100%;
+}
+h1 {
+  font-size: var(--header);
+  margin: 1.2em 0 1.2em var(--normal);
+}
+h2 {
+  font-size: var(--subheading);
+  font-weight: normal;
+}
+label {
+  font-size: var(--small);
+  font-weight: bold;
+}
+th {
+  font-size: var(--small);
+  font-weight: bold;
+  padding: 6px;
+}
+td {
+  padding: 6px;
+  text-align: center;
+}
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+input {
+  border-radius: var(--border-radius);
+  background-color: var(--secondary);
+  color: var(--text);
+}
+textarea {
+  border-radius: var(--border-radius);
+  background-color: var(--secondary);
+  color: var(--text);
+}
+.delete-btn {
+  background-color: var(--red);
+  color: var(--bg);
+}
+.safe-btn {
+  background-color: var(--green);
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-column-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: left;
+}
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
+.flex-row-between {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.group-label {
+  font-size: var(--smallest);
+  color: var(--light-text);
+  font-weight: bold;
+  padding: 6px;
+}
+.bottom-border {
+  border-bottom: solid var(--border) var(--primary);
+}
+.bottom-border td {
+  border-bottom: solid var(--border) var(--primary);
+}
+.light-bottom-border {
+  border-bottom: solid var(--border) var(--secondary);
+}
+.left-border {
+  border-left: solid var(--border) var(--primary);
+}
+.right-border {
+  border-right: solid var(--border) var(--primary);
+}
+.display-none {
+  display: none;
+}
+
+#delete-confirmation {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+#invalid-input {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+/* NAV BAR */
+nav {
+  z-index: 9;
+  height: 8vh;
+  width: 100vw;
+  min-height: 52px;
+  margin: 0;
+  display: flex;
+  position: sticky;
+  top: 0;
+  left: 0;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg);
+  border-bottom: solid var(--primary) var(--border);
+}
+nav div {
+  display: flex;
+  align-items: center;
+}
+nav a {
+  margin: 0 10px 0 10px;
+  padding: 5px;
+  font-size: var(--nav);
+  font-family: "medium";
+  background: none;
+  border-width: var(--border);
+  border-color: var(--bg);
+  border-style: solid;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  color: var(--text);
+}
+nav a:hover,
+nav button:hover {
+  background-color: var(--accent);
+}
+.selected-btn {
+  border-color: var(--primary);
+}
+nav button {
+  margin: 0 10px 0 10px;
+  padding: 4px 5px 0 5px;
+  background: none;
+  border-width: var(--border);
+  border-color: var(--bg);
+  border-style: solid;
+  border-radius: var(--border-radius);
+}
+/* hamburger */
+#hamburger-menu {
+  border: none;
+}
+#hamburger-menu img {
+  height: 40px;
+  width: 40px;
+}
+#hamburger-dropdown {
+  z-index: 8;
+  position: sticky;
+  top: calc(8vh + var(--border));
+  left: calc(80vw - var(--border));
+  border-radius: 0 0 12px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: auto;
+  width: 20vw;
+  min-width: 170px;
+  background-color: var(--bg);
+  border: solid var(--text) var(--border);
+  border-top: 0;
+  display: none;
+}
+#hamburger-dropdown button,
+#hamburger-dropdown a {
+  width: 100%;
+  height: 40px;
+  background: none;
+  border-color: var(--text);
+  border-style: solid;
+  border-width: 1px 0 1px 0;
+  border-radius: 0;
+}
+#hamburger-dropdown button:hover {
+  background-color: var(--accent);
+}
+
+/* DAY VIEW */
+#day-header button {
+  background: none;
+  border-width: var(--border);
+  border-color: var(--bg);
+  border-style: solid;
+  border-radius: var(--border-radius);
+}
+#day-header .selected-btn {
+  border-color: var(--text);
+}
+#day-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.group-data {
+  color: var(--light-text);
+  font-size: var(--sub-normal);
+}
+#day-table input,
+#day-table textarea {
+  height: 80%;
+}
+
+/* GROUPS */
+#group-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+#group-table th {
+  border-bottom: solid var(--border) var(--primary);
+}
+#group-table textarea {
+  width: 96%;
+}
+.removed-from-group {
+  text-decoration: line-through;
+  background-color: var(--secondary);
+}
+.student-name-btn {
+  font-size: var(--normal);
+  border: none;
+  display: flex;
+  flex-direction: row;
+}
+.student-name-btn :first-child {
+  margin-right: 4px;
+}
+.group-btn {
+  font-size: var(--normal);
+  border: none;
+  cursor: pointer;
+}
+/* student search styles */
+.student-search-container {
+  /* Critical: Positions the dropdown relative to this container */
+  position: relative;
+  width: 300px;
+}
+
+.student-search-input-group {
+  display: flex;
+}
+
+#studentSearchInput {
+  flex-grow: 1;
+  border: var(--border) solid var(--primary);
+}
+
+.student-search-dropdown {
+  /* Dropdown positioning */
+  position: absolute;
+  top: 100%; /* Place it right below the input group */
+  left: 0;
+  z-index: 11; /* Ensure it floats above other content */
+
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+
+  background: var(--bg);
+  border: var(--border) solid var(--primary);
+  border-top: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+
+  /* Initially hidden */
+  display: none;
+}
+.search-dropdown li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+.search-dropdown li:hover {
+  background-color: #f0f0f0;
+}
+/* Class to show the dropdown */
+.search-dropdown.show {
+  display: block;
+}
+/* lesson input styles */
+/* day select dropdown for lesson */
+/* Container for relative positioning */
+.day-selector-container {
+  position: relative;
+  display: inline-block;
+}
+/* Style for the button */
+.dropdown-toggle {
+  border: var(--border) solid var(--primary);
+  background-color: var(--bg);
+  cursor: pointer;
+  border-radius: var(--border-radius);
+}
+/* Style for the dropdown menu (UL) */
+.dropdown-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute; /* Position relative to the container */
+  top: 100%; /* Place it right below the button */
+  left: 0;
+  z-index: 11;
+  background-color: var(--bg);
+  border: var(--border) solid var(--primary);
+  border-top: none;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  display: none; /* Initially hidden */
+}
+/* Style for list items */
+.dropdown-menu li a {
+  display: block;
+  text-decoration: none;
+  color: var(--text);
+}
+/* Hover effect */
+.dropdown-menu li a:hover {
+  background-color: var(--accent);
+  cursor: pointer;
+}
+/* Class to show the dropdown */
+.dropdown-menu.show {
+  display: block;
+}
+
+/* STUDENTS */
+#student-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--bg);
+}
+#student-table tr {
+  border-bottom: solid var(--border) var(--primary);
+}
+#groups-container {
+  position: relative;
+}
+#group-dropdown {
+  /* Dropdown positioning */
+  position: absolute;
+  top: 100%; /* Place it right below the input group */
+  left: 0;
+  z-index: 11; /* Ensure it floats above other content */
+
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+
+  background: var(--bg);
+  border: var(--border) solid var(--primary);
+  border-top: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: block;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  display: none;
+}
+#group-dropdown li {
+  cursor: pointer;
+  color: var(--text);
+}
+#group-dropdown li:hover {
+  background-color: #f0f0f0;
+}
+
+#school-container {
+  position: relative;
+}
+#school-dropdown {
+  /* Dropdown positioning */
+  position: absolute;
+  top: 100%; /* Place it right below the input group */
+  left: 0;
+  z-index: 11; /* Ensure it floats above other content */
+
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+
+  background: var(--bg);
+  border: var(--border) solid var(--primary);
+  border-top: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: block;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  display: none;
+}
+#school-dropdown li {
+  cursor: pointer;
+  color: var(--text);
+}
+#school-dropdown li:hover {
+  background-color: #f0f0f0;
+}
+#table-body input {
+  width: 80%;
+}
+
+/* SCHOOLS */
+#school-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--bg);
+}
+#school-table textarea {
+  width: 96%;
+}
+#school-table div {
+  margin-left: 20%;
+}
+#school-table tr {
+  border-bottom: solid var(--border) var(--primary);
+}
+
+/* NEW YEAR */
+#new-year-main {
+  display: grid;
+  grid-template-columns: 33.33% 33.33% 33.33%;
+
+  height: auto;
+}
+#new-year-main td {
+  text-align: left;
+}
+#new-year-main table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--bg);
+}
+
+/* DETAILED STUDENT */
+#detailed-notes-grid {
+  display: grid;
+  grid-template-columns: 33.33% 33.33% 33.33%;
+  grid-template-rows: 50% 50%;
+  gap: 10px;
+}
+#detailed-header {
+  justify-content: space-around;
+}
+#secondary-nav {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+  border-top: solid var(--border) var(--primary);
+  border-bottom: solid var(--border) var(--primary);
+  margin: var(--normal) 0 var(--normal) 0;
+}
+#secondary-nav button {
+  font-size: var(--sub-normal);
+}
+#secondary-nav .selected-sector {
+  background-color: var(--primary);
+  color: var(--bg);
+}
+#secondary-nav button {
+  background-color: var(--bg);
+  color: var(--text);
+  border-bottom: none;
+  border-top: none;
+  border-left: none;
+  border-right: solid var(--border) var(--primary);
+  border-radius: none;
+  padding-top: var(--border);
+  padding-bottom: var(--border);
+  border-radius: 0;
+}
+#detailed-main {
+  width: calc(100% - 2em);
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: start;
+  margin-left: 2em;
+}
+#detailed-main textarea {
+  margin-right: 10px;
+}
+#detailed-main label {
+  margin-right: 20px;
+}
+.lesson-btn {
+  font-size: var(--normal);
+  border-radius: var(--border-radius);
+  margin-right: 10px;
+}
+.term-container {
+  display: grid;
+  grid-template-columns: repeat(5, 20%);
+}
+
+/* DETAILED GROUP */
+#student-list-table {
+  width: calc(100% - 2em);
+  border-collapse: collapse;
+}
+#student-list-table th {
+  border-bottom: solid var(--border) var(--primary);
+}
+
+/* DAY VIEW */
+.attendance-btn {
+  border: none;
+  cursor: pointer;
+  font-size: var(--subheading);
+}
+.attendance-container {
+  position: relative;
+  display: inline-block;
+  border: none;
+}
+/* Style for the dropdown menu (UL) */
+.attendance-dropdown {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute; /* Position relative to the container */
+  top: 100%; /* Place it right below the button */
+  left: 0;
+  z-index: 11;
+  background-color: var(--bg);
+  border: var(--border) solid var(--primary);
+  border-top: none;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  display: none; /* Initially hidden */
+}
+/* Style for list items */
+.attendance-dropdown li a {
+  display: block;
+  text-decoration: none;
+  color: var(--text);
+}
+/* Hover effect */
+.attendance-dropdown li a:hover {
+  background-color: var(--accent);
+  cursor: pointer;
+}
+/* Class to show the dropdown */
+.attendance-dropdown.show {
+  display: block;
+}
+.attendance-dropdown.open-up {
+  top: auto; /* Remove the top: 100% */
+  bottom: 100%; /* Push it above the button */
+  border-top: var(--border) solid var(--primary); /* Restore top border */
+  border-bottom: none; /* Remove bottom border */
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+.group-data-name-btn {
+  text-align: center;
+  vertical-align: middle;
+}
+.group-data-student-name-btn {
+  border: none;
+}

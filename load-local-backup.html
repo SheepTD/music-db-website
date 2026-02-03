@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music DB - Day view</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <nav>
+      <div>
+        <a href="students.html">Students</a>
+        <a href="groups.html">Groups</a>
+        <a href="schools.html">Schools</a>
+      </div>
+      <div>
+        <a href="index.html">Mon</a>
+        <a href="tuesday.html">Tue</a>
+        <a href="wednesday.html">Wed</a>
+        <a href="thursday.html">Thu</a>
+        <a href="friday.html">Fri</a>
+        <button id="hamburger-menu">
+          <img src="assets/icons8-hamburger-menu-500.png" />
+        </button>
+      </div>
+    </nav>
+    <div id="hamburger-dropdown">
+      <button id="dark-mode-toggle" style="border-top-width: 0">
+        Toggle Dark Mode
+      </button>
+      <button id="download-backup">Backup DB Locally</button>
+      <button>Backup DB to Supabase</button>
+      <button>Load DB from file</button>
+      <button>Load DB from Supabase</button>
+      <button onclick="location.href='new-year.html'">Start New Year</button>
+      <button style="border-radius: 0 0px 8px 8px; border-bottom-width: 0">
+        Help
+      </button>
+    </div>
+
+    <!-- page specific code -->
+
+    <header style="display: block">
+      <h1>Load local backup</h1>
+      <p style="margin-left: 2em; margin-bottom: 2em">
+        This will override the current saved data.
+        <span style="color: var(--red)">PLEASE MAKE A BACKUP</span> before
+        performing this action.
+      </p>
+    </header>
+    <body>
+      <div clas="flex-row" style="margin-left: 2em">
+        <input
+          type="file"
+          id="upload"
+          name="file"
+          multiple
+          style="margin-bottom: 1em"
+        />
+        <button id="uploadBtn" class="delete-btn">
+          Upload DB to temporary storage
+        </button>
+      </div>
+    </body>
+
+    <div id="invalid-input">
+      <div
+        style="
+          background-color: var(--bg);
+          border: solid var(--primary) var(--border);
+          border-radius: var(--border-radius);
+          padding: 20px;
+        "
+        class="flex-column"
+      >
+        <h2>Invalid Input</h2>
+        <div class="flex-column" id="append-invalid"></div>
+        <button id="rehide-invalid-popup" style="margin-top: 10px">
+          Dismiss
+        </button>
+      </div>
+    </div>
+
+    <!-- libraries -->
+    <script src="libraries/sql-asm.js"></script>
+    <script src="libraries/jquery-3.7.1.js"></script>
+    <script src="libraries/supabase.js"></script>
+    <!-- main script -->
+    <script src="load-local-backup.js"></script>
+  </body>
+</html>

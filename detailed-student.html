@@ -47,10 +47,10 @@
 
     <header id="detailed-header">
       <div>
-        <h1 style="margin-bottom: 10px">John Doe</h1>
-        <p style="margin-left: 2em">Saxaphone</p>
-        <p style="margin-left: 2em">Year 11</p>
-        <p style="margin-left: 2em">Catholic Cathedral</p>
+        <h1 style="margin-bottom: 10px" id="student-name">John Doe</h1>
+        <p style="margin-left: 2em" id="student-instrument">Saxaphone</p>
+        <p style="margin-left: 2em" id="student-year">Year 11</p>
+        <p style="margin-left: 2em" id="student-school">Catholic Cathedral</p>
       </div>
       <div>
         <h1 style="margin-bottom: 10px">
@@ -58,15 +58,15 @@
         </h1>
         <div class="flex-row">
           <label style="margin-right: 20px">Group: </label>
-          <p>C</p>
+          <p id="student-group"></p>
         </div>
         <div class="flex-row">
           <label style="margin-right: 20px">Lesson(s): </label>
-          <p>Mon 09:30</p>
+          <p id="student-lessons">Mon 09:30</p>
         </div>
         <div class="flex-row">
-          <button style="margin-right: 20px">Edit</button>
-          <button>Delete</button>
+          <button style="margin-right: 20px" id="header-edit-btn">Edit</button>
+          <button id="student-delete-btn">Delete</button>
         </div>
       </div>
       <div
@@ -75,27 +75,27 @@
       >
         <div class="flex-column-left">
           <label>Instrument hire</label>
-          <textarea></textarea>
+          <textarea id="instrument-hire-notes" disabled></textarea>
         </div>
         <div class="flex-column-left">
           <label>Year plan</label>
-          <textarea></textarea>
+          <textarea id="year-plan-notes" disabled></textarea>
         </div>
         <div class="flex-column-left">
           <label>Musicianship materials</label>
-          <textarea></textarea>
+          <textarea id="musicianship-materials-notes" disabled></textarea>
         </div>
         <div class="flex-column-left">
           <label>Year goals</label>
-          <textarea></textarea>
+          <textarea id="year-goals-notes" disabled></textarea>
         </div>
         <div class="flex-column-left">
           <label>Technician materials</label>
-          <textarea></textarea>
+          <textarea id="technician-materials-notes" disabled></textarea>
         </div>
         <div class="flex-column-left">
           <label>Performance materials</label>
-          <textarea></textarea>
+          <textarea id="performance-materials-notes" disabled></textarea>
         </div>
       </div>
     </header>

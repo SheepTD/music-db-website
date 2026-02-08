@@ -608,7 +608,7 @@ initSqlJs(config).then(function (SQL) {
                   <td class="${borderClass} group-data">${row.member_email}</td>
                   <td class="${borderClass} group-data" colspan="1"></td>
                   <td class="${borderClass} group-data">
-                      <textarea style="height: 1.2em" disabled>${
+                      <textarea class="individual-notes" disabled>${
                         notes[row.member_id] ? notes[row.member_id] : ""
                       }</textarea>
                   </td>

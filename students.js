@@ -292,7 +292,7 @@ initSqlJs(config).then(function (SQL) {
     const whereClause = search ? `WHERE ${search}` : "";
     const orderClause = order
       ? `ORDER BY ${order}`
-      : "ORDER BY s.first_name, s.last_name ASC";
+      : "ORDER BY sc.name, s.first_name, s.last_name ASC";
 
     // retrieve data
     let res;
@@ -452,7 +452,8 @@ initSqlJs(config).then(function (SQL) {
       if (editing) {
         return false;
       }
-      const id = $(this).attr("id").split("student")[1];
+      editing = true;
+      const id = $(this).attr("id").split("studentBtn")[1];
       localStorage.setItem("selected-student-id", JSON.stringify(id));
       location.href = "detailed-student.html";
     });

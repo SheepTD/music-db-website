@@ -174,6 +174,329 @@ initSqlJs(config).then(function (SQL) {
 
   // --- ☝️ NECESSARY ON EVERY PAGE   👇 PAGE SPECIFIC ---
 
+  // year,
+  // input box on top,
+  // sanitise inputs,
+  // use try/catch for queries,
+  // include db IDs for render and save,
+  // add delete btn,
+  // include room for sorting/search/constraints in SQL query
+  // one add at a time
+  // one edit at a time
+
+  let editing = false; // true if student being edited/added
+
+  // fetch selected student id
+  let selectedStudentId;
+  try {
+    const rawSelectedStudentId = localStorage.getItem("selected-student-id");
+    selectedStudentId = JSON.parse(rawSelectedStudentId);
+    console.log("selected student id:", selectedStudentId);
+  } catch (e) {
+    console.log("Failed to fetch selected student id, redirecting...");
+    location.href("index.html");
+  }
+
+  // validation functions
+  let isAllValid = true;
+
+  // messages for invalid stuff
+  let invalidMessages = [];
+
+  // Validation rules and error messages function
+  const checkStringValid = (label, value, min, max) => {
+    if (typeof value === "string") {
+      if (value.length >= min) {
+        if (value.length <= max) {
+          console.log(`${label} inputted is valid!`);
+        } else {
+          isAllValid = false;
+          invalidMessages.push(
+            // append messages to the array for later displaying
+            `${label} is invalid: inputted value is above maximum character limit of ${max}. Value inputted: ${value}`
+          );
+        }
+      } else {
+        isAllValid = false;
+        invalidMessages.push(
+          `${label} is invalid: inputted value does reach the minimum character limit of ${min}. Value inputted: ${value}`
+        );
+      }
+    } else {
+      isAllValid = false;
+      invalidMessages.push(
+        `${label} is invalid: inputted value is not a string. Value inputted: ${value}`
+      );
+    }
+  };
+
+  const checkIntValid = (label, value, min, max) => {
+    const parsedValue = parseInt(value);
+    if (!isNaN(parsedValue)) {
+      if (parsedValue >= min) {
+        if (parsedValue <= max) {
+          console.log(`${label} is valid!`);
+        } else {
+          isAllValid = false;
+          invalidMessages.push(
+            `${label} is invalid: inputted value is greater than the maximum value. Value inputted: ${value}`
+          );
+        }
+      } else {
+        isAllValid = false;
+        invalidMessages.push(
+          `${label} is invalid: inputted value is lesson the minimum. Value inputted: ${value}`
+        );
+      }
+    } else {
+      isAllValid = false;
+      invalidMessages.push(
+        `${label} is invalid: inputted value is not an integer. Value inputted: ${value}`
+      );
+    }
+  };
+
+  // validate email input
+  const checkEmailValid = (label, value, nullable) => {
+    if (nullable && value === "") {
+      console.log(`${label} is an empty string but is valid!`);
+    } else {
+      if (value === "" || value === null) {
+        console.log(`${label} inputted is null but still valid`);
+      } else if (value.length <= 255) {
+        if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+          console.log(`${label} inputted is valid!`);
+        } else {
+          isAllValid = false;
+          invalidMessages.push(
+            `${label} is invalid: inputted value does not follow correct format for an email address`
+          );
+        }
+      } else {
+        isAllValid = false;
+        invalidMessages.push(
+          `${label} is invalid: inputted value is above the maximum character limit of 25. Value inputted: ${value}`
+        );
+      }
+    }
+  };
+
+  // dismiss invalid input message
+  function dismissInvalid() {
+    $("#invalid-input").css("display", "none");
+    $("#append-invalid").empty();
+  }
+  $("#rehide-invalid-popup").click(function () {
+    dismissInvalid();
+  });
+
+  // variable for fetched data
+  let formattedStudent;
+
+  function fetchData() {
+    const actualYear = year;
+
+    let res;
+    try {
+      const query = `
+        SELECT 
+        s.*,
+        sch.name AS school_name,
+        sch.room AS school_room,
+        l.day AS lesson_day,
+        l.time AS lesson_time,
+        g.name AS group_name,
+        g.instrument AS group_instrument,
+        g.id AS group_id,
+        tp.t1_goals, tp.t2_goals, tp.t3_goals, tp.t4_goals,
+        tp.t1_plans, tp.t2_plans, tp.t3_plans, tp.t4_plans,
+        yp.plan AS yearly_plan,
+        yp.goals AS yearly_goals,
+        yp.technical_materials,
+        a.*
+      FROM students_${actualYear} s
+      -- Link to School details
+      LEFT JOIN schools_${actualYear} sch ON s.school_id = sch.id
+      -- Link to Lessons (Student can have individual or group lessons)
+      LEFT JOIN lessons_${actualYear} l ON s.id = l.student_id
+      -- Link to Groups via the join table
+      LEFT JOIN join_groups_students_${actualYear} jgs ON s.id = jgs.student_id
+      LEFT JOIN groups_${actualYear} g ON (jgs.group_id = g.id OR l.group_id = g.id)
+      -- Link to Academic Planning
+      LEFT JOIN term_plans_${actualYear} tp ON s.id = tp.student_id
+      LEFT JOIN year_plans_${actualYear} yp ON s.id = yp.student_id
+      -- Link to Attendance (via lesson_id)
+      LEFT JOIN attendance_${actualYear} a ON l.id = a.lesson_id
+      WHERE s.id = ${selectedStudentId};
+      `;
+      res = db.exec(query);
+      console.log("Fetched results: ", JSON.stringify(res));
+    } catch (e) {
+      console.log("Failed to fetch data:", e);
+    }
+    /**
+     * Helper to group attendance and notes by term and week
+     */
+    const organizeAttendance = (record) => {
+      const attendanceData = {};
+
+      for (let t = 1; t <= 4; t++) {
+        attendanceData[`term${t}`] = [];
+        // Terms 1-3 usually have 11 weeks, Term 4 has 10 based on your schema
+        const maxWeeks = t === 4 ? 10 : 11;
+
+        for (let w = 1; w <= maxWeeks; w++) {
+          attendanceData[`term${t}`].push({
+            week: w,
+            status: record[`t${t}_wk${w}_attendance`] || null,
+            notes: record[`t${t}_wk${w}_notes`] || null,
+          });
+        }
+      }
+      return attendanceData;
+    };
+    // parse data
+    try {
+      if (res && res.length > 0) {
+        const columns = res[0].columns;
+        const values = res[0].values;
+
+        const studentsMap = new Map();
+
+        values.forEach((row) => {
+          // Create a helper object to access columns by name: { id: 1, first_name: "John", ... }
+          const record = columns.reduce((acc, col, index) => {
+            acc[col] = row[index];
+            return acc;
+          }, {});
+
+          const studentId = record.id;
+
+          if (!studentsMap.has(studentId)) {
+            studentsMap.set(studentId, {
+              id: studentId,
+              firstName: record.first_name,
+              lastName: record.last_name,
+              email: record.email,
+              mobile: record.mobile,
+              year: record.year,
+              formClass: record.form_class,
+              notes: record.notes,
+              instrument: record.instrument,
+              school: {
+                name: record.school_name,
+                room: record.school_room,
+              },
+              planning: {
+                yearly: {
+                  plan: record.yearly_plan,
+                  goals: record.yearly_goals,
+                  technical: record.technical_materials,
+                  performance: record.performance_materials,
+                },
+                terms: {
+                  t1: { goals: record.t1_goals, plans: record.t1_plans },
+                  t2: { goals: record.t2_goals, plans: record.t2_plans },
+                  t3: { goals: record.t3_goals, plans: record.t3_plans },
+                  t4: { goals: record.t4_goals, plans: record.t4_plans },
+                },
+              },
+              lessons: [],
+              groups: [],
+            });
+          }
+
+          const student = studentsMap.get(studentId);
+
+          // Add Lesson & Attendance Data if it exists
+          if (record.lesson_id) {
+            // Use lesson_id for more accurate deduplication
+            const hasLesson = student.lessons.some(
+              (l) => l.id === record.lesson_id
+            );
+
+            if (!hasLesson) {
+              // Dynamic Attendance Parsing
+              const attendanceData = {};
+              for (let t = 1; t <= 4; t++) {
+                attendanceData[`term${t}`] = [];
+                // Term 4 has 10 weeks; Terms 1-3 have 11 weeks
+                const maxWeeks = t === 4 ? 10 : 11;
+
+                for (let w = 1; w <= maxWeeks; w++) {
+                  attendanceData[`term${t}`].push({
+                    week: w,
+                    status: record[`t${t}_wk${w}_attendance`],
+                    notes: record[`t${t}_wk${w}_notes`],
+                  });
+                }
+              }
+
+              student.lessons.push({
+                id: record.lesson_id,
+                day: record.lesson_day,
+                time: record.lesson_time,
+                attendance: attendanceData,
+              });
+            }
+          }
+
+          // Add Group Data if it exists
+          if (
+            record.group_name &&
+            !student.groups.some((g) => g.name === record.group_name)
+          ) {
+            student.groups.push({
+              name: record.group_name,
+              instrument: record.group_instrument,
+              id: record.group_id,
+            });
+          }
+        });
+
+        formattedStudent = Array.from(studentsMap.values())[0];
+        console.log("Parsed Student: ", formattedStudent);
+
+        // You can now access attendance like:
+        // formattedStudents[0].lessons[0].attendance.term1[0].status (T1 W1)
+      }
+    } catch (e) {
+      console.error("Failed to parse data:", e);
+    }
+  }
+  fetchData();
+
+  function renderHeaderData() {
+    // CONTINUE HERE!!!!!! 😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫
+    // set header data
+    $("#student-name").text(
+      `${formattedStudent.firstName} ${formattedStudent.lastName}`
+    );
+    $("#student-instrument").text(formattedStudent.instrument);
+    $("#student-year").text(`Year ${formattedStudent.year}`);
+    $("#student-school").text(formattedStudent.school.name);
+    $("#student-group").html(
+      formattedStudent.groups
+        .map(
+          (group) =>
+            `<button class="group-btn" id="groupBtn${group.id}">${group.name}</button>`
+        )
+        .join(",<br>")
+    );
+  }
+  renderHeaderData();
+
+  //function to open detailed group page and set selected group id
+  $(".group-btn").click(function () {
+    // stop new page from being opened whilst editing
+    if (editing) {
+      return false;
+    }
+    const id = $(this).attr("id").split("groupBtn")[1];
+    localStorage.setItem("selected-group-id", JSON.stringify(id));
+    location.href = "detailed-group.html";
+  });
+
   // get selected sector setting
   let selectedSector = JSON.parse(localStorage.getItem("selectedSector"));
   if (selectedSector === null) {

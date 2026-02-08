@@ -374,8 +374,8 @@ nav button {
 .student-name-btn {
   font-size: var(--normal);
   border: none;
-  display: flex;
-  flex-direction: row;
+  text-align: center;
+  vertical-align: middle;
 }
 .student-name-btn :first-child {
   margin-right: 4px;
@@ -663,6 +663,14 @@ nav button {
 }
 
 /* DAY VIEW */
+#day-table textarea {
+  width: 22vw;
+  height: 100px;
+  font-size: var(--sub-normal);
+}
+#day-table textarea.individual-notes {
+  height: 60px;
+}
 .attendance-btn {
   border: none;
   cursor: pointer;

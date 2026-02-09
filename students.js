@@ -624,12 +624,14 @@ initSqlJs(config).then(function (SQL) {
             <td id="groups-container">
               ${
                 groups.length > 0
-                  ? groups.map(
-                      (group) => `<div class="flex-row">
+                  ? groups
+                      .map(
+                        (group) => `<div class="flex-row">
                     <p class="group${group.id}">${group.name}</p>
                     <button class="remove-group-btn">-</button>
                   </div>`
-                    )
+                      )
+                      .join("")
                   : ""
               }
               <div class="flex-row group-search-container">

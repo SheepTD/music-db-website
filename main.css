@@ -430,7 +430,7 @@ nav button {
   border-bottom: 1px solid #eee;
 }
 .search-dropdown li:hover {
-  background-color: #f0f0f0;
+  background-color: var(--accent);
 }
 /* Class to show the dropdown */
 .search-dropdown.show {
@@ -520,7 +520,7 @@ nav button {
   color: var(--text);
 }
 #group-dropdown li:hover {
-  background-color: #f0f0f0;
+  background-color: var(--accent);
 }
 
 #school-container {
@@ -553,7 +553,7 @@ nav button {
   color: var(--text);
 }
 #school-dropdown li:hover {
-  background-color: #f0f0f0;
+  background-color: var(--accent);
 }
 #table-body input {
   width: 80%;

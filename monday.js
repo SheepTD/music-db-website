@@ -834,6 +834,10 @@ initSqlJs(config).then(function (SQL) {
         return str.replace(/'/g, "''").replace(/`/g, "``").trim();
       };
 
+      // reset validity messages
+      isAllValid = true;
+      invalidMessages = [];
+
       const row = $(this).closest("tr");
 
       // Group lesson
@@ -973,6 +977,7 @@ initSqlJs(config).then(function (SQL) {
         console.log("notes:", notes);
         console.log("attendance:", attendance);
 
+        console.log(JSON.stringify(invalidMessages));
         // check attendance validity
         if (
           attendance !== "present" &&

@@ -834,6 +834,10 @@ initSqlJs(config).then(function (SQL) {
         return str.replace(/'/g, "''").replace(/`/g, "``").trim();
       };
 
+      // reset validity messages
+      isAllValid = true;
+      invalidMessages = [];
+
       const row = $(this).closest("tr");
 
       // Group lesson

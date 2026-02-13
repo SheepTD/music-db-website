@@ -712,7 +712,8 @@ initSqlJs(config).then(function (SQL) {
         <td>
           <div class="flex-row">
             <label class="group-label">Name:</label>
-            <input id="hod-name-input" type="text" placeholder="room" />
+            <input id="hod-first-input" style="width: 30%" type="text" placeholder="first name" />
+            <input id="hod-last-input" style="width: 30%" type="text" placeholder="last name" />
           </div>
           <div class="flex-row">
             <label class="group-label">Phone:</label>

@@ -1035,7 +1035,7 @@ ${notesColumn}
         // check variables' values are valid
         checkStringValid("Group name", groupName, 1, 50); // Group name must be entered
         checkStringValid("Instrument", instrument, 0, 50);
-        checkStringValid("Notes", notes, 0, 50);
+        checkStringValid("Notes", notes, 0, 1000);
 
         // student ids of students in the group who HAVE not been removed (have the line through them class)
         let studentIds = [];
@@ -1913,7 +1913,7 @@ VALUES (
         // check variables' values are valid
         checkStringValid("Group name", groupName, 1, 50); // Group name must be entered
         checkStringValid("Instrument", instrument, 0, 50);
-        checkStringValid("Notes", notes, 0, 50);
+        checkStringValid("Notes", notes, 0, 1000);
 
         // student ids of students in the group who HAVE not been removed (have the line through them class)
         let studentIds = [];

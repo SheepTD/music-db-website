@@ -638,7 +638,7 @@ initSqlJs(config).then(function (SQL) {
       if (editing) {
         return false;
       }
-      const id = $(this).attr("id").split("student")[1];
+      const id = $(this).attr("id").split("studentBtn")[1];
       localStorage.setItem("selected-student-id", JSON.stringify(id));
       location.href = "detailed-student.html";
     });
@@ -647,7 +647,7 @@ initSqlJs(config).then(function (SQL) {
       if (editing) {
         return false;
       }
-      const id = $(this).attr("id").split("student")[1];
+      const id = $(this).attr("id").split("studentBtn")[1];
       localStorage.setItem("selected-student-id", JSON.stringify(id));
       location.href = "detailed-student.html";
     });

@@ -466,6 +466,8 @@ initSqlJs(config).then(function (SQL) {
   }
   fetchData();
 
+  console.log(JSON.stringify(formattedStudent.lessons));
+
   function renderHeaderData() {
     // CONTINUE HERE!!!!!! 😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫
     // set header data
@@ -482,6 +484,11 @@ initSqlJs(config).then(function (SQL) {
             `<button class="group-btn" id="groupBtn${group.id}">${group.name}</button>`
         )
         .join(",<br>")
+    );
+    $("#student-lessons").html(
+      formattedStudent.lessons
+        .map((lesson) => `${lesson.day} ${lesson.time}`)
+        .join(", ")
     );
   }
   renderHeaderData();

@@ -312,7 +312,7 @@ initSqlJs(config).then(function (SQL) {
           s.year, 
           s.form_class, 
           s.email,
-          GROUP_CONCAT(l.group_id) AS lesson_group_ids
+          GROUP_CONCAT(COALESCE(l.group_id, 'individual')) AS lesson_group_ids
         FROM 
           students_${year} s 
         JOIN 
@@ -361,6 +361,7 @@ initSqlJs(config).then(function (SQL) {
         const schoolName = values[i][4] ? values[i][4] : "";
         const instrument = values[i][5] ? values[i][5] : "";
         const lessonIds = values[i][6] ? values[i][6].split(",") : [];
+        const lessonGroupIds = values[i][13] ? values[i][13].split(",") : "";
         const lessonDayTimes = values[i][7]
           ? values[i][7].split(",").map((lesson, index) => {
               const [day, time] = lesson.split(" ");
@@ -368,6 +369,7 @@ initSqlJs(config).then(function (SQL) {
                 id: lessonIds[index],
                 day: day,
                 time: time,
+                groupId: lessonGroupIds[index],
               };
             })
           : [];
@@ -382,14 +384,14 @@ initSqlJs(config).then(function (SQL) {
         const yearLevel = values[i][10] ? values[i][10] : "";
         const formClass = values[i][11] ? values[i][11] : "";
         const email = values[i][12] ? values[i][12] : "";
-        const lessonGroupIds = values[i][13] ? values[i][13].split(",") : "";
-        let lessons = [];
-        lessonDayTimes.forEach((lesson, index) => {
-          if (lessonGroupIds[index] && lessonGroupIds[index] !== "") {
-            lesson.groupId = lessonGroupIds[index];
-          }
-          lessons.push(lesson);
-        });
+
+        let lessons = lessonDayTimes;
+        // lessonDayTimes.forEach((lesson, index) => {
+        //   if (lessonGroupIds[index] && lessonGroupIds[index] !== "") {
+        //     lesson.groupId = lessonGroupIds[index];
+        //   }
+        //   lessons.push(lesson);
+        // });
 
         console.log("studentId:", studentId);
         console.log("schoolId:", schoolId);
@@ -422,7 +424,7 @@ initSqlJs(config).then(function (SQL) {
               .map(
                 (lesson) =>
                   `<p id="lesson${lesson.id}" ${
-                    lesson.groupId
+                    lesson.groupId !== "individual"
                       ? `class="lessonGroupId${lesson.groupId}"`
                       : ""
                   }>${lesson.day + " " + lesson.time}</p>`
@@ -1176,66 +1178,6 @@ initSqlJs(config).then(function (SQL) {
 
         // execute insertion query
         try {
-          console.log(
-            `
-            -- 1. Update core student details
-            UPDATE students_${actualYear}
-            SET
-              first_name = ${nullify(firstName)},
-              last_name = ${nullify(lastName)},
-              form_class = ${nullify(formClass)},
-              school_id = ${schoolId === "" ? "NULL" : schoolId},
-              instrument = ${nullify(instrument)},
-              year = ${yearLevel === "" ? "NULL" : yearLevel},
-              email = ${nullify(email)}
-            WHERE id = ${id};
-
-            -- 2. Sync Group Memberships
-            -- First, remove old links
-            DELETE FROM join_groups_students_${actualYear} 
-            WHERE student_id = ${id};
-
-            -- Then, insert current links
-            ${groupIds
-              .get()
-              .map(
-                (gId) => `
-              INSERT INTO join_groups_students_${actualYear} (student_id, group_id)
-              VALUES (${id}, ${gId});
-            `
-              )
-              .join("\n")}
-
-            -- 3. Sync Individual Lessons
-            -- Since these are student-specific lessons, we clear and re-add 
-            -- (or you could implement an ID-based check like your inspiration code)
-            -- DELETE FROM lessons_${actualYear} 
-            -- WHERE student_id = ${id} AND group_id IS NULL;
-
-            ${lessons
-              .get()
-              .map((lesson) =>
-                lesson.remove && lesson.id
-                  ? `DELETE FROM lessons_${actualYear} WHERE id = ${lesson.id};`
-                  : lesson.id && !lesson.remove
-                  ? `
-                  UPDATE lessons_${actualYear} 
-                  SET 
-                  day = ${nullify(lesson.day)}
-                  time = ${nullify(lesson.time)}
-                  student_id = ${nullify(lesson.studentId)}
-                  WHERE id = ${lesson.id}r
-                  `
-                  : !lesson.id
-                  ? `
-              INSERT INTO lessons_${actualYear} (day, time, student_id)
-              VALUES (${nullify(lesson.day)}, ${nullify(lesson.time)}, ${id});
-            `
-                  : ""
-              )
-              .join("\n")}
-          `
-          );
           // run query
           db.exec(
             `
@@ -1275,25 +1217,26 @@ initSqlJs(config).then(function (SQL) {
 
             ${lessons
               .get()
-              .map((lesson) =>
-                lesson.remove && lesson.id
-                  ? `DELETE FROM lessons_${actualYear} WHERE id = ${lesson.id};`
-                  : lesson.id && !lesson.remove
-                  ? `
-                  UPDATE lessons_${actualYear} 
-                  SET 
-                  day = ${nullify(lesson.day)},
-                  time = ${nullify(lesson.time)},
-                  student_id = ${id}
-                  WHERE id = ${lesson.id}
-                  `
-                  : !lesson.id
-                  ? `
-              INSERT INTO lessons_${actualYear} (day, time, student_id)
-              VALUES (${nullify(lesson.day)}, ${nullify(lesson.time)}, ${id});
-            `
-                  : ""
-              )
+              .map((lesson) => {
+                if (lesson.remove && lesson.id) {
+                  return `DELETE FROM lessons_${actualYear} WHERE id = ${lesson.id};`;
+                }
+                if (lesson.id && !lesson.remove) {
+                  return `UPDATE lessons_${actualYear} 
+                          SET day = ${nullify(lesson.day)}, 
+                              time = ${nullify(lesson.time)}, 
+                              student_id = ${id} 
+                          WHERE id = ${lesson.id};`; // Added semicolon
+                }
+                if (!lesson.id) {
+                  return `INSERT INTO lessons_${actualYear} (day, time, student_id) 
+                          VALUES (${nullify(lesson.day)}, ${nullify(
+                    lesson.time
+                  )}, ${id});`;
+                }
+                return "";
+              })
+              .filter((sql) => sql !== "") // Remove empty entries
               .join("\n")}
           `
           );
